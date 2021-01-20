@@ -7,7 +7,7 @@ const REGISTER_OK = '注册成功!';
 const LOGIN_OUT = '退出登陆成功!';
 const NETWORK_ERROR = '网络出错!';
 const LOGIN_OK = '登陆成功!';
-const LOGIN_FAILED = '登陆失败!';
+const LOGIN_FAILED = '登陆失败, 密码错误!';
 const USERNAME_IS_NULL = '登陆账户不存在!';
 
 module.exports = {
