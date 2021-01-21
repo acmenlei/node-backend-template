@@ -1,5 +1,5 @@
 #### 项目介绍
-一个nodejs、express、mysql、redis、jwt、session、crypto-js写的后台模板，提供初学者学习，详细的模块划分
+一个`nodejs`、`express`、`mysql`、`redis`、`jwt`、`session`、`crypto-js`写的后台模板，提供初学者学习，详细的模块划分
 #### src/
 ##### authentication
 鉴权模块操作
@@ -24,3 +24,12 @@
 
 ##### index.js
 项目入口文件
+
+#### 配置跨域
+在入口文件(index.js)中,找到以下内容
+```js
+app.use(cors({
+    origin: 'http://localhost:3001', // 此处为你的前端地址，值可以是string | Array<string>
+    credentials: true // 允许跨域携带cookie
+})) // 跨域
+```

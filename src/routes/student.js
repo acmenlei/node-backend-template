@@ -36,7 +36,7 @@ router.post('/register', (request, response) => {
                 try {
                     const hash = await GenerateToken({ username }, "10h")
                     setToken(response, hash, username) // 设置token操作
-                    return response.json({ code: 1, msg: statusMsg });
+                    return response.json({ code: 200, msg: statusMsg });
                 } catch (e) {
                     return response.json({ code: -95, msg: REGISTER_FAILURE })
                 }
@@ -51,7 +51,8 @@ router.post('/register', (request, response) => {
 
 /* 退出登陆操作 */
 router.post("/loginout", async (req, response) => {
-    const { token, username } = req.headers;
+    const { token } = req.headers;
+    const { username } = req.body;
     const result = await TOKEN_VERIFY(token, username)
     if (result) { // token未携带或者redis查询该token不存在 返回非法操作
         return response.json({ code: -99, msg: TOKEN_IS_UNDEFINED });
@@ -74,7 +75,7 @@ router.post('/login', (req, resp) => {
                     // 生成token
                     GenerateToken({ username }, "10h").then(hash => {
                         setToken(resp, hash, username);
-                        return resp.json({ code: 66, msg: LOGIN_OK });
+                        return resp.json({ code: 200, msg: LOGIN_OK });
                     })
                 } else { // 密码错误
                     return resp.json({ code: -65, MSG: LOGIN_FAILED });
@@ -90,8 +91,9 @@ router.post('/login', (req, resp) => {
 })
 
 /* 获取学生用户信息集合 */
-router.get('/studentInfo', async (request, response) => {
-    const { token, username } = request.headers;
+router.post('/studentInfo', async (request, response) => {
+    const { token } = request.headers;
+    const { username } = request.body;
     const result = await TOKEN_VERIFY(token, username);
     if (result) {
         return response.json({ code: -99, msg: TOKEN_IS_UNDEFINED });
@@ -103,7 +105,7 @@ router.get('/studentInfo', async (request, response) => {
                 error ? reject(error.message) : resolve(result);
             })
                 .then(result => {
-                    return response.json({ code: 1, list: result });
+                    return response.json({ code: 200, list: result });
                 })
                 .catch(reason => {
                     return response.json({ code: -1, msg: reason });
