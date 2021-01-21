@@ -21,7 +21,7 @@ const { TOKEN, setToken } = require("../common/token/token");
 const RedisClient = require('../connect/redis');
 const SQLQuery = require("../common/query");
 const MySQL = require('../connect/mysql');
-const { GenerateToken, VerifyToken } = require("../authentication/token");
+const { GenerateToken } = require("../authentication/token");
 const { AES, AESparse } = require("../authentication/hash");
 
 /* 注册操作 */
