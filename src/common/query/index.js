@@ -1,4 +1,4 @@
-const MySQL = require('../connect/mysql')
+const MySQL = require('../../connect/mysql')
 
 function SQLQuery({ sql, values = [], timeout = 4000 }, cb) {
     MySQL.getConnection()

@@ -17,9 +17,9 @@ const {
     USERNAME_IS_NULL,
     REGISTER_IS_EXISTS
 } = require('../common/tip/tip'); // 提示信息
-const { TOKEN, TOKEN_VERIFY, setToken } = require("../common/token/token");
+const { TOKEN, setToken } = require("../common/token/token");
 const RedisClient = require('../connect/redis');
-const SQLQuery = require("../query/query");
+const SQLQuery = require("../common/query");
 const MySQL = require('../connect/mysql');
 const { GenerateToken, VerifyToken } = require("../authentication/token");
 const { AES, AESparse } = require("../authentication/hash");
@@ -51,13 +51,8 @@ router.post('/register', (request, response) => {
 
 /* 退出登陆操作 */
 router.post("/loginout", async (req, response) => {
-    const { token } = req.headers;
     const { username } = req.body;
-    const result = await TOKEN_VERIFY(token, username)
-    if (result) { // token未携带或者redis查询该token不存在 返回非法操作
-        return response.json({ code: -99, msg: TOKEN_IS_UNDEFINED });
-    }
-    RedisClient.del(username + ':' + TOKEN); // 删除token, 客户端的token将失效
+    RedisClient.del(`${username}:${TOKEN}`); // 删除token, 客户端的token将失效
     return response.json({ code: 200, msg: LOGIN_OUT });
 })
 /*  */
@@ -92,14 +87,7 @@ router.post('/login', (req, resp) => {
 
 /* 获取学生用户信息集合 */
 router.post('/studentInfo', async (request, response) => {
-    const { token } = request.headers;
-    const { username } = request.body;
-    const result = await TOKEN_VERIFY(token, username);
-    if (result) {
-        return response.json({ code: -99, msg: TOKEN_IS_UNDEFINED });
-    }
     try {
-        await VerifyToken(token); // 验证token是否合格
         SQLQuery({ sql: SELECT_STUDENTINFO }, (error, result) => {
             new Promise((resolve, reject) => {
                 error ? reject(error.message) : resolve(result);

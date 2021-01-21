@@ -4,14 +4,17 @@ const { VerifyToken } = require('../../authentication/token')
 
 // 验证token是否合格
 function TOKEN_VERIFY(token, username) {
-    return new Promise(async (resolve) => {
+    return new Promise((resolve) => {
         try {
-            const { code } = await VerifyToken(token) // 验证通过 code=200
-            RedisClient.get(username + ':' + TOKEN, (err, reply) => {
-                if (code !== 200 || reply == null) { // 当code不为200或者从redis查询的token为null
+            RedisClient.get(`${username}:${TOKEN}`, async (err, reply) => {
+                if (reply == null) { // 当从redis查询的token为null
                     resolve(true) // 那么他就是非法操作
                 } else {
-                    resolve(false) // 否则验证通过
+                    if (token === reply) { // 传进来的和当前的token一致
+                        const { code } = await VerifyToken(token) // 继续验证，验证通过 code=200
+                        code === 200 ? resolve(false) : resolve(true)
+                    }
+                    resolve(true) // 否则验证不通过
                 }
             })
         } catch (error) {
