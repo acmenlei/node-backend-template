@@ -9,11 +9,13 @@
     "crypto-js": "^4.0.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
+    "mysql2": "^2.2.5",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.7",
-    "redis": "^3.0.2"
+    "redis": "^3.0.2",
+    "sequelize": "^6.6.5"
   },
   "scripts": {
-    "start": "nodemon src/index"
+    "start": "nodemon ./src/index.js"
   }
 }

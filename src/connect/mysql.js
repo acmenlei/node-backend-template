@@ -1,22 +1,15 @@
-const mysql = require('mysql')
+const Sequelize  = require('sequelize');
 
-const config = {
-    host: "localhost",
+const db = {}
+// 方法 2: 分别传递参数 (其它数据库)
+const sequelize = new Sequelize('admin-top-blog', 'root', 'root', {
+    host: 'localhost',
     port: 3306,
-    user: "root",
-    password: "201314",
-    database: "study"
-}
+    dialect: 'mysql',/* 选择 'mysql' | 'mariadb' | 'postgres' | 'mssql' 其一 */
+    pool: { max: 5, min: 0, acquire: 3000, idle: 10000 }
+});
 
-class MySQL {
-    static connect;
-    static getConnection() {
-        MySQL.connect = mysql.createConnection(config)
-        MySQL.connect.connect()
-    }
-    static close() {
-        MySQL.connect.end()
-    }
-}
-// 导出链接对象
-module.exports = MySQL
+db.sequelize = sequelize;
+db.Sequelize = Sequelize;
+
+module.exports = db;

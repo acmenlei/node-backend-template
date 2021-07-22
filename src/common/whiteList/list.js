@@ -1,3 +1,3 @@
-const whileList = ['/student/login', '/student/register'];
+const whileList = ['/admin/login', '/admin/register'];
 
 module.exports = whileList;

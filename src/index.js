@@ -1,6 +1,9 @@
 const express = require('express');
 const app = express();
-const studentRouter = require('./routes/student');
+/* 路由 */
+const adminRouter = require('./routes/admin');
+const articleRouter = require('./routes/article');
+
 const cookieConfig = require('./authentication/cookie-session');
 const cors = require('cors');
 const WHITE_LIST = require("./common/whiteList/list");
@@ -38,6 +41,7 @@ app.use("*", async (req, resp, next) => {
     }
 })
 // 配置路由
-app.use('/student', studentRouter);
+app.use('/admin', adminRouter);
+app.use('/article', articleRouter);
 
 app.listen(3000);

@@ -31,7 +31,7 @@ function TOKEN_VERIFY(token, username) {
 /* token令牌设置操作 */
 function setToken(resp, hash, username) {
     resp.setHeader(TOKEN, hash) // 设置token
-    RedisClient.SETEX(`${username}:${TOKEN}`, 60 * 60 * 10, hash) // 设置有效时间为10小时
+    RedisClient.SETEX(`${username}:${TOKEN}`, 60 * 60 * 24, hash) // 设置有效时间为24小时
 }
 
 module.exports = {

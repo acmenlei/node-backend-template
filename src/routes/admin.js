@@ -17,7 +17,7 @@ const {
 } = require('../common/tip/tip'); // 提示信息
 const { TOKEN, setToken } = require("../common/token/token");
 const RedisClient = require('../connect/redis');
-const SQLQuery = require("../common/query");
+const SQLQuery = require("../connect/mysql"); // 可能是个空
 const MySQL = require('../connect/mysql');
 const { GenerateToken } = require("../authentication/token");
 const { AES, AESparse } = require("../authentication/hash");
