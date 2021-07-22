@@ -18,7 +18,7 @@ app.use("/source", express.static(resolve(__dirname, "public")))
 
 // 跨域配置
 app.use(cors({
-    origin: ['http://10.2.181.219:3001', 'http://localhost:3001'],
+    origin: ['http://localhost:8080'],
     credentials: true
 }));
 

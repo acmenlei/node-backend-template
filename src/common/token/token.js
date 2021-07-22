@@ -29,13 +29,13 @@ function TOKEN_VERIFY(token, username) {
 }
 
 /* token令牌设置操作 */
-function setToken(resp, hash, username) {
+function SET_TOKEN(resp, hash, username) {
     resp.setHeader(TOKEN, hash) // 设置token
     RedisClient.SETEX(`${username}:${TOKEN}`, 60 * 60 * 24, hash) // 设置有效时间为24小时
 }
 
 module.exports = {
     TOKEN_VERIFY,
-    setToken,
+    SET_TOKEN,
     TOKEN
 }

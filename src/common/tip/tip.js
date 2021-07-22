@@ -9,6 +9,8 @@ const NETWORK_ERROR = '网络出错!';
 const LOGIN_OK = '登陆成功!';
 const LOGIN_FAILED = '登陆失败, 密码错误!';
 const USERNAME_IS_NULL = '登陆账户不存在!';
+const SEARCH_OK = '查询成功';
+const SEARCH_ERROR = '查询失败';
 
 module.exports = {
     TOKEN_IS_UNDEFINED,
@@ -20,5 +22,7 @@ module.exports = {
     LOGIN_OK,
     LOGIN_FAILED,
     USERNAME_IS_NULL,
-    REGISTER_IS_EXISTS
+    REGISTER_IS_EXISTS,
+    SEARCH_OK,
+    SEARCH_ERROR
 }
