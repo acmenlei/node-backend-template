@@ -11,11 +11,11 @@ const User = require("../models/User")
 router.post('/register', async (request, response) => {
     const { ll_username, ll_password, ll_sex } = request.body;
     try {
-        const { dataValues } = await User.findOne({ where: { ll_username } });
+        const dataValues = await User.findOne({ where: { ll_username } });
         if (dataValues != null) {  // 账户已存在的情况
             return response.json({ code: -96, msg: Tip.REGISTER_IS_EXISTS });
         }
-    } catch (e) {
+    } catch {
         return response.json({ code: -93, msg: Tip.NETWORK_ERROR })
     }
     const HASH_STRING = AES(ll_password); // 加密密码
@@ -43,21 +43,24 @@ router.post("/loginout", async (request, response) => {
 router.post('/login', async (request, response) => {
     const { ll_username, ll_password } = request.body;
     try {
-        const { dataValues } = await User.findOne({ where: ll_username });
+        const dataValues = await User.findOne({ where: { ll_username } });
         if (dataValues != null) {
             if (AESparse(dataValues.ll_password) === ll_password) {
                 try {
-                    const TOKEN = await GenerateToken({ ll_username }, "24h");
-                    SET_TOKEN(response, TOKEN, ll_username);
-                    return response.json({ code: 200, msg: Tip.LOGIN_OK });
-                } catch (e) {
-                    return response.json({ code: -65, msg: Tip.LOGIN_FAILED });
+                    // const TOKEN = await GenerateToken({ ll_username }, "24h");
+                    // SET_TOKEN(response, TOKEN, ll_username);
+                    return response.json({ code: 200, msg: Tip.LOGIN_OK, ll_username });
+                } catch {
+                    return response.json({ code: -65, msg: Tip.NETWORK_ERROR });
                 }
+            } else {
+                return response.json({ code: -65, msg: Tip.LOGIN_FAILED });
             }
         } else {
             return response.json({ code: -77, msg: Tip.USERNAME_IS_NULL });
         }
     } catch (e) {
+        console.log(e);
         return response.json({ code: -65, msg: Tip.LOGIN_FAILED });
     }
 })
