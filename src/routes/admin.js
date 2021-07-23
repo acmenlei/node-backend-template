@@ -49,7 +49,7 @@ router.post('/login', async (request, response) => {
                 try {
                     const TOKEN = await GenerateToken({ ll_username }, "24h");
                     SET_TOKEN(response, TOKEN, ll_username);
-                    return response.json({ code: 200, msg: Tip.LOGIN_OK, ll_username });
+                    return response.json({ code: 200, msg: Tip.LOGIN_OK });
                 } catch {
                     return response.json({ code: -65, msg: Tip.NETWORK_ERROR });
                 }

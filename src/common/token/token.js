@@ -1,4 +1,5 @@
 const TOKEN = 'token'
+const USERNAME = 'username'
 const RedisClient = require("../../connect/redis")
 const { VerifyToken } = require('../../authentication/token')
 
@@ -28,9 +29,11 @@ function TOKEN_VERIFY(token, username) {
 
 }
 
-/* token令牌设置操作 */
+/* token令牌设置操作并且允许前端获取自定义请求头 */
 function SET_TOKEN(resp, hash, username) {
-    resp.setHeader(TOKEN, hash) // 设置token
+    resp.setHeader(TOKEN, hash) // 设置token 
+    resp.setHeader(USERNAME, username) // 设置username
+    resp.setHeader("Access-Control-Expose-Headers", TOKEN + "," + USERNAME)
     RedisClient.SETEX(`${username}:${TOKEN}`, 60 * 60 * 24, hash) // 设置有效时间为24小时
 }
 

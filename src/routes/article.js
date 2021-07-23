@@ -33,7 +33,7 @@ router.post("/publish", async (request, response) => {
         ll_likedCounts,
         ll_cover
     });
-    return response.json({ data, msg: "ok", code: 200 })
+    return response.json({ data, msg: Tip.ARTICLE_PUBLISH_SUCCESS, code: 200 })
 })
 
 module.exports = router;
