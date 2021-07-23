@@ -47,8 +47,8 @@ router.post('/login', async (request, response) => {
         if (dataValues != null) {
             if (AESparse(dataValues.ll_password) === ll_password) {
                 try {
-                    // const TOKEN = await GenerateToken({ ll_username }, "24h");
-                    // SET_TOKEN(response, TOKEN, ll_username);
+                    const TOKEN = await GenerateToken({ ll_username }, "24h");
+                    SET_TOKEN(response, TOKEN, ll_username);
                     return response.json({ code: 200, msg: Tip.LOGIN_OK, ll_username });
                 } catch {
                     return response.json({ code: -65, msg: Tip.NETWORK_ERROR });
