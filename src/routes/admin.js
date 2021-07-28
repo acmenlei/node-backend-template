@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Tip = require('../common/tip/tip'); // 提示信息
-const { TOKEN, SET_TOKEN } = require("../common/token/token");
+const { TOKEN, SET_TOKEN, TOKEN_VERIFY } = require("../common/token/token");
 const RedisClient = require('../connect/redis');
 const { GenerateToken } = require("../authentication/token");
 const { AES, AESparse } = require("../authentication/hash");
@@ -38,7 +38,7 @@ router.post("/loginout", async (request, response) => {
     RedisClient.del(`${ll_username}:${TOKEN}`); // 删除token, 客户端的token将失效
     return response.json({ code: 200, msg: Tip.LOGIN_OUT });
 })
-/*  */
+
 /* 登陆操作 (登陆是不存在token的) */
 router.post('/login', async (request, response) => {
     const { ll_username, ll_password } = request.body;
@@ -62,6 +62,18 @@ router.post('/login', async (request, response) => {
     } catch (e) {
         console.log(e);
         return response.json({ code: -65, msg: Tip.LOGIN_FAILED });
+    }
+})
+/* 权限验证 */
+router.post('/verify', async (request, response) => {
+    const { token, username } = request.headers;
+    try {
+        await TOKEN_VERIFY(token, username);
+        return response.json({ code: 200, msg: "ok" });
+    } catch (reason) {
+        return reason.msg === 'TokenExpiredError' ?
+            response.json({ code: -888, msg: Tip.TOKEN_IS_EXPIRESE }) : // token过期的情况
+            response.json({ code: -999, msg: Tip.TOKEN_IS_UNDEFINED }); // token错误的情况
     }
 })
 
