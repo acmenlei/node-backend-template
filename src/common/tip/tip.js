@@ -1,5 +1,5 @@
 /* 后台状态统一管理 */
-const TOKEN_IS_UNDEFINED = '请携带有效的Token!';
+const TOKEN_IS_UNDEFINED = '您没有权限操作此区域!';
 const TOKEN_IS_EXPIRESE = '登录信息已过期，请重新登陆后操作!';
 const REGISTER_FAILURE = '账户信息注册失败!';
 const REGISTER_IS_EXISTS = '注册账户已经存在请重新注册!';
