@@ -1,7 +1,7 @@
 const { sequelize } = require("../connect/mysql");
 const { Model, DataTypes } = require("sequelize");
 
-class Article extends Model {}
+class Article extends Model { }
 
 Article.init(
   {
@@ -14,6 +14,12 @@ Article.init(
       type: DataTypes.TEXT,
     },
     ll_introduce: {
+      type: DataTypes.TEXT,
+    },
+    ll_content: {
+      type: DataTypes.TEXT,
+    },
+    ll_content_html: {
       type: DataTypes.TEXT,
     },
     ll_category: {

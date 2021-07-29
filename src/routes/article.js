@@ -17,20 +17,24 @@ router.post("/publish", async (request, response) => {
     const {
         ll_title,
         ll_introduce,
+        ll_content,
+        ll_content_html,
         ll_category,
         ll_tags,
-        ll_visitedCounts,
-        ll_likedCounts,
+        // ll_visitedCounts,
+        // ll_likedCounts,
         ll_cover } = request.body,
         ll_id = new Date().getTime();
     const data = await Article.create({
         ll_id,
         ll_title,
         ll_introduce,
+        ll_content,
+        ll_content_html,
         ll_category,
         ll_tags,
-        ll_visitedCounts,
-        ll_likedCounts,
+        // ll_visitedCounts,
+        // ll_likedCounts,
         ll_cover
     });
     return response.json({ data, msg: Tip.ARTICLE_PUBLISH_SUCCESS, code: 200 })
