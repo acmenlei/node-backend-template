@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 const adminRouter = require('./routes/admin');
 const articleRouter = require('./routes/article');
+const tagRouter = require('./routes/tag');
+const categoryRouter = require('./routes/category');
 const cookieConfig = require('./authentication/cookie-session');
 const cors = require('cors');
 const WHITE_LIST = require("./common/whiteList/list");
@@ -47,5 +49,7 @@ app.use("*", async (req, resp, next) => {
 // 配置路由
 app.use('/admin', adminRouter);
 app.use('/article', articleRouter);
+app.use('/tag', tagRouter);
+app.use('/category', categoryRouter);
 
 app.listen(3000);
