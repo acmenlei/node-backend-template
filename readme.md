@@ -1,11 +1,18 @@
 #### 项目介绍
-一个`nodejs`、`express`、`mysql`、`redis`、`jwt`、`session`、`crypto-js`写的后台模板，提供初学者学习，详细的模块划分
+blog-admin-top后台管理系统的服务端, Node编写, 配合blog-admin-top仓库食用, 详细的模块拆分
+
 #### src/
 ##### authentication
 鉴权模块操作
 
 ##### common
 公共资源模块操作处理
+    - tip
+    提示文字
+    - token
+    token的验证和设置
+    - whiteList
+    白名单(不做验证拦截)
 
 ##### connect
 数据库链接模块
@@ -14,13 +21,10 @@
 静态资源目录
 
 ##### models
-数据库模型
+数据库模型定义
 
 ##### routes
 接口路由模块
-
-##### sql
-`sql`语句模块，所有用到的`sql`语句都在这里
 
 ##### index.js
 项目入口文件
