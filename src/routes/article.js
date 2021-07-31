@@ -45,7 +45,28 @@ router.post("/publish", async (request, response) => {
         // ll_likedCounts,
         ll_cover } = request.body,
         ll_id = new Date().getTime();
-    const data = await Article.create({
+    try {
+        const data = await Article.create({
+            ll_id,
+            ll_title,
+            ll_introduce,
+            ll_content,
+            ll_content_html,
+            ll_category,
+            ll_tags,
+            // ll_visitedCounts,
+            // ll_likedCounts,
+            ll_cover
+        });
+        return response.json({ data, msg: Tip.OPERATOR_OK, code: 200 })
+    } catch {
+        return response.json({ msg: Tip.OPERATOR_ERROR, code: -999 })
+    }
+})
+
+/* 更新 */
+router.post("/update", async (request, response) => {
+    const {
         ll_id,
         ll_title,
         ll_introduce,
@@ -53,11 +74,21 @@ router.post("/publish", async (request, response) => {
         ll_content_html,
         ll_category,
         ll_tags,
-        // ll_visitedCounts,
-        // ll_likedCounts,
-        ll_cover
-    });
-    return response.json({ data, msg: Tip.ARTICLE_PUBLISH_SUCCESS, code: 200 })
+        ll_cover } = request.body;
+    try {
+        const data = await Article.update({
+            ll_title,
+            ll_introduce,
+            ll_content,
+            ll_content_html,
+            ll_category,
+            ll_tags,
+            ll_cover
+        }, { where: { ll_id } });
+        return response.json({ data, msg: Tip.OPERATOR_OK, code: 200 })
+    } catch {
+        return response.json({ msg: Tip.OPERATOR_ERROR, code: 200 })
+    }
 })
 
 module.exports = router;
