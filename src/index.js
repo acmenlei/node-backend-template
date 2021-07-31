@@ -4,6 +4,7 @@ const adminRouter = require('./routes/admin');
 const articleRouter = require('./routes/article');
 const tagRouter = require('./routes/tag');
 const categoryRouter = require('./routes/category');
+// const uploadRouter = require('./routes/upload');
 const cookieConfig = require('./authentication/cookie-session');
 const cors = require('cors');
 const WHITE_LIST = require("./common/whiteList/list");
@@ -51,5 +52,6 @@ app.use('/admin', adminRouter);
 app.use('/article', articleRouter);
 app.use('/tag', tagRouter);
 app.use('/category', categoryRouter);
+// app.use('/upload', uploadRouter);
 
 app.listen(3000);
