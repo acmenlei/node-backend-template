@@ -11,9 +11,8 @@ const LOGIN_FAILED = '登陆失败, 密码错误!';
 const USERNAME_IS_NULL = '登陆账户不存在!';
 const SEARCH_OK = '查询成功';
 const SEARCH_ERROR = '查询失败';
-const ARTICLE_PUBLISH_SUCCESS = '文章发布成功';
 const OPERATOR_OK = '操作成功'
-const OPERATOR_ERROR = '操作失败'
+const OPERATOR_ERROR = '操作失败 请检查网络'
 
 module.exports = {
     TOKEN_IS_UNDEFINED,
@@ -28,7 +27,6 @@ module.exports = {
     REGISTER_IS_EXISTS,
     SEARCH_OK,
     SEARCH_ERROR,
-    ARTICLE_PUBLISH_SUCCESS,
     OPERATOR_OK,
     OPERATOR_ERROR
 }
