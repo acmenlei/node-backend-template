@@ -1,4 +1,4 @@
 node_modules
 dist
 yarn.lock
-src/common/alioss
+# src/common/alioss
