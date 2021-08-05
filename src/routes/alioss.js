@@ -4,7 +4,7 @@ const config = require("../common/alioss/config");
 const { STS } = require("ali-oss");
 const Tip = require("../common/tip/tip")
 
-router.post('/getToken', async (request, response) => {
+router.post('/getToken', async(request, response) => {
     const client = new STS({
         accessKeyId: config.accessKeyId,
         accessKeySecret: config.accessKeySecret
