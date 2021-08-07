@@ -3,21 +3,21 @@ const { Model, DataTypes } = require("sequelize");
 
 class Category extends Model {}
 
-Category.init(
-  {
+Category.init({
     ll_id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      autoIncrement: false,
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: false,
     },
     ll_category_name: {
         type: DataTypes.STRING
+    },
+    ll_category_val: {
+        type: DataTypes.STRING
     }
-  },
-  {
+}, {
     tableName: "ll_categorys",
     sequelize,
-  }
-);
+});
 
 module.exports = Category;
