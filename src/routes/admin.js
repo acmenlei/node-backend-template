@@ -6,6 +6,7 @@ const RedisClient = require('../connect/redis');
 const { GenerateToken } = require("../authentication/token");
 const { AES, AESparse } = require("../authentication/hash");
 const User = require("../models/User")
+const { increaseRegister, increaseLogin } = require('../common/redis')
 
 /* 注册操作 */
 router.post('/register', async(request, response) => {
@@ -25,6 +26,7 @@ router.post('/register', async(request, response) => {
         await User.create({ ll_id, ll_username, ll_password: HASH_STRING, ll_sex });
         const TOEKN = await GenerateToken({ ll_username }, "24h"); // token有效期一天
         SET_TOKEN(response, TOEKN, ll_username) // 设置token操作
+        increaseRegister(); // 今日注册人数增加
         return response.json({ code: 200, msg: Tip.REGISTER_OK });
     } catch (e) {
         return response.json({ code: -95, msg: Tip.REGISTER_FAILURE })
@@ -48,6 +50,7 @@ router.post('/login', async(request, response) => {
                     try {
                         const TOKEN = await GenerateToken({ ll_username }, "24h");
                         SET_TOKEN(response, TOKEN, ll_username);
+                        increaseLogin(); // 今日登录人数增加
                         return response.json({ code: 200, msg: Tip.LOGIN_OK });
                     } catch {
                         return response.json({ code: -65, msg: Tip.NETWORK_ERROR });

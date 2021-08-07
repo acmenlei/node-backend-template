@@ -16,7 +16,8 @@ const Tip = require('./common/tip/tip');
 const { resolve } = require("path");
 
 /* 定时任务引入 */
-const { scheduleControl } = require('./common/schedule')
+const { scheduleControl } = require('./common/schedule');
+const { increaseVisited } = require('./common/redis')
 
 app.use(cookieConfig); // 配置cookie
 app.use(express.urlencoded({ extended: false })); // 接收post请求数据
@@ -31,6 +32,7 @@ app.use(cors({
 
 // 全局拦截验证token配置
 app.use("*", async(req, resp, next) => {
+        increaseVisited(); // 访问量自增
         const { baseUrl } = req;
         /* 白名单过滤,登陆注册等操作不需要传递token */
         if (WHITE_LIST.includes(baseUrl)) {

@@ -3,6 +3,7 @@ const express = require('express');
 const router = express.Router();
 const Article = require("../models/Article");
 const { Op } = require('../connect/mysql')
+const { increaseArticlePublish } = require('../common/redis')
 
 /* 获取列表 */
 router.post("/list", async(request, response) => {
@@ -75,6 +76,7 @@ router.post("/publish", async(request, response) => {
             // ll_likedCounts,
             ll_cover
         });
+        increaseArticlePublish(); // 文章发布数量自增
         return response.json({ data, msg: Tip.OPERATOR_OK, code: 200 })
     } catch {
         return response.json({ msg: Tip.OPERATOR_ERROR, code: -999 })
