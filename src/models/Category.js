@@ -14,6 +14,12 @@ Category.init({
     },
     ll_category_val: {
         type: DataTypes.STRING
+    },
+    ll_createdTime: {
+        type: DataTypes.DATE
+    },
+    ll_updatedTime: {
+        type: DataTypes.DATE
     }
 }, {
     tableName: "ll_categorys",
