@@ -6,7 +6,7 @@ const { GenerateToken } = require("../authentication/token");
 const { AES, AESparse } = require("../authentication/hash");
 const User = require("../models/User")
 const { increaseRegister, increaseLogin } = require('../common/visual')
-const { savePermissions, deletePermissions, queryPermission } = require('../permission')
+const { savePermissions, deletePermissions } = require('../permission')
 
 /* 注册操作 */
 router.post('/register', async(request, response) => {
@@ -74,12 +74,7 @@ router.post('/login', async(request, response) => {
     /* 权限验证 */
 router.post('/verify', async(request, response) => {
     const { token, username } = request.headers;
-    const { code } = request.body;
     try {
-        const permissions = await queryPermission(username);
-        if (!permissions.split(',').includes(code)) { // 防止前端使用地址栏跳转(查看是否有权限)
-            return response.json({ code: -422, msg: Tip.TOKEN_IS_UNDEFINED }); // token错误的情况
-        }
         await tokenVerify(token, username);
         return response.json({ code: 200, msg: "ok" });
     } catch (reason) {
