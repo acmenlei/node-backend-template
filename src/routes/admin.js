@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const Tip = require('../common/tip/tip'); // 提示信息
+const User = require("../models/User")
 const { setToken, tokenVerify, deleteToken } = require("../common/token/token");
 const { GenerateToken } = require("../authentication/token");
 const { AES, AESparse } = require("../authentication/hash");
-const User = require("../models/User")
 const { increaseRegister, increaseLogin } = require('../common/visual')
-const { savePermissions, deletePermissions } = require('../permission')
+const { savePermissions, deletePermissions, queryPermission } = require('../permission')
 
 /* 注册操作 */
 router.post('/register', async(request, response) => {
@@ -56,7 +56,7 @@ router.post('/login', async(request, response) => {
                         // 保存权限
                         savePermissions(ll_username, dataValues.ll_permission);
                         // 生成前端想要的权限格式
-                        return response.json({ code: 200, msg: Tip.LOGIN_OK });
+                        return response.json({ code: 200, permissions: dataValues.ll_permission.split(','), msg: Tip.LOGIN_OK });
                     } catch {
                         return response.json({ code: -65, msg: Tip.NETWORK_ERROR });
                     }
@@ -74,8 +74,13 @@ router.post('/login', async(request, response) => {
     /* 权限验证 */
 router.post('/verify', async(request, response) => {
     const { token, username } = request.headers;
+    const { routeCode } = request.body;
     try {
         await tokenVerify(token, username);
+        const permissions = await queryPermission(username);
+        if(!permissions.includes(routeCode)) {
+            return response.json({ code: -422, msg: Tip.TOKEN_IS_EXPIRESE }); // 没有访问权限
+        }
         return response.json({ code: 200, msg: "ok" });
     } catch (reason) {
         return reason.msg === 'TokenExpiredError' ?
