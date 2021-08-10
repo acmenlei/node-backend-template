@@ -6,7 +6,7 @@ const { setToken, tokenVerify, deleteToken } = require("../common/token/token");
 const { GenerateToken } = require("../authentication/token");
 const { AES, AESparse } = require("../authentication/hash");
 const { increaseRegister, increaseLogin } = require('../common/visual')
-const { savePermissions, deletePermissions, queryPermission } = require('../permission')
+const { queryPermission } = require('../permission')
 
 /* 注册操作 */
 router.post('/register', async(request, response) => {
@@ -37,7 +37,6 @@ router.post('/register', async(request, response) => {
 router.post("/loginout", async(request, response) => {
     const { ll_username } = request.body;
     deleteToken(ll_username);
-    deletePermissions(ll_username);
     return response.json({ code: 200, msg: Tip.LOGIN_OUT });
 })
 
@@ -53,8 +52,6 @@ router.post('/login', async(request, response) => {
                         setToken(response, TOKEN, ll_username);
                         // 今日登录人数增加
                         increaseLogin();
-                        // 保存权限
-                        savePermissions(ll_username, dataValues.ll_permission);
                         // 生成前端想要的权限格式
                         return response.json({ code: 200, permissions: dataValues.ll_permission.split(','), msg: Tip.LOGIN_OK });
                     } catch {

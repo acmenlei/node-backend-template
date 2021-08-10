@@ -1,8 +1,7 @@
 const Permission = require('./models/Permission');
-const redis = require('./connect/redis')
+const User = require('./models/User');
 const FIRST = 1,
     SECOND = 2;
-const PERMISSION = 'permission'
 
 /**
  * 生成前端需要的权限结构
@@ -33,25 +32,16 @@ async function generatePermissions(permissions) {
     return Promise.resolve(permissionConfigura)
 }
 
-function savePermissions(username, permissions) {
-    redis.SETEX(`${username}:${PERMISSION}`, 60 * 60 * 24, permissions) // 设置有效时间为24小时
-}
-
-function deletePermissions(username) {
-    redis.DEL(`${username}:${PERMISSION}`) // 删除权限记录
-}
-
-function queryPermission(username) {
-    return new Promise((resolve, reject) => {
-        redis.GET(`${username}:${PERMISSION}`, (error, data) => {
-                data == null ? reject() : resolve(data);
-            }) // 查询权限记录
-    })
+async function queryPermission(ll_username) {
+    try {
+        const { ll_permission } = await User.findOne({ attributes: ['ll_permission'], where: { ll_username } });
+        return Promise.resolve(ll_permission.split(','))
+    } catch {
+        return Promise.reject()
+    }
 }
 
 module.exports = {
     generatePermissions,
-    savePermissions,
     queryPermission,
-    deletePermissions
 }

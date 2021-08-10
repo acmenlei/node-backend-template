@@ -10,8 +10,8 @@ router.post('/queryPermissions', async(request, response) => {
         ll_username
     } = request.body;
     try {
-        const perimssions = await queryPermission(ll_username);
-        return response.json({ permissions: perimssions.split(','), code: 200, msg: Tip.SEARCH_OK })
+        const permissions = await queryPermission(ll_username);
+        return response.json({ permissions, code: 200, msg: Tip.SEARCH_OK })
     } catch {
         return response.json({ code: -999, msg: Tip.SEARCH_ERROR })
     }
