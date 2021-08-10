@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const Tip = require('../common/tip/tip'); // 提示信息
-const { TOKEN, SET_TOKEN, TOKEN_VERIFY } = require("../common/token/token");
-const RedisClient = require('../connect/redis');
+const { setToken, tokenVerify, deleteToken } = require("../common/token/token");
 const { GenerateToken } = require("../authentication/token");
 const { AES, AESparse } = require("../authentication/hash");
 const User = require("../models/User")
-const { increaseRegister, increaseLogin } = require('../common/redis')
+const { increaseRegister, increaseLogin } = require('../common/visual')
+const { savePermissions, deletePermissions, queryPermission } = require('../permission')
 
 /* 注册操作 */
 router.post('/register', async(request, response) => {
@@ -25,7 +25,7 @@ router.post('/register', async(request, response) => {
     try {
         await User.create({ ll_id, ll_username, ll_password: HASH_STRING, ll_sex });
         const TOEKN = await GenerateToken({ ll_username }, "24h"); // token有效期一天
-        SET_TOKEN(response, TOEKN, ll_username) // 设置token操作
+        setToken(response, TOEKN, ll_username) // 设置token操作
         increaseRegister(); // 今日注册人数增加
         return response.json({ code: 200, msg: Tip.REGISTER_OK });
     } catch (e) {
@@ -36,7 +36,8 @@ router.post('/register', async(request, response) => {
 /* 退出登陆操作 */
 router.post("/loginout", async(request, response) => {
     const { ll_username } = request.body;
-    RedisClient.del(`${ll_username}:${TOKEN}`); // 删除token, 客户端的token将失效
+    deleteToken(ll_username);
+    deletePermissions(ll_username);
     return response.json({ code: 200, msg: Tip.LOGIN_OUT });
 })
 
@@ -49,8 +50,12 @@ router.post('/login', async(request, response) => {
                 if (AESparse(dataValues.ll_password) === ll_password) {
                     try {
                         const TOKEN = await GenerateToken({ ll_username }, "24h");
-                        SET_TOKEN(response, TOKEN, ll_username);
-                        increaseLogin(); // 今日登录人数增加
+                        setToken(response, TOKEN, ll_username);
+                        // 今日登录人数增加
+                        increaseLogin();
+                        // 保存权限
+                        savePermissions(ll_username, dataValues.ll_permission);
+                        // 生成前端想要的权限格式
                         return response.json({ code: 200, msg: Tip.LOGIN_OK });
                     } catch {
                         return response.json({ code: -65, msg: Tip.NETWORK_ERROR });
@@ -69,8 +74,13 @@ router.post('/login', async(request, response) => {
     /* 权限验证 */
 router.post('/verify', async(request, response) => {
     const { token, username } = request.headers;
+    const { code } = request.body;
     try {
-        await TOKEN_VERIFY(token, username);
+        const permissions = await queryPermission(username);
+        if (!permissions.split(',').includes(code)) { // 防止前端使用地址栏跳转(查看是否有权限)
+            return response.json({ code: -422, msg: Tip.TOKEN_IS_UNDEFINED }); // token错误的情况
+        }
+        await tokenVerify(token, username);
         return response.json({ code: 200, msg: "ok" });
     } catch (reason) {
         return reason.msg === 'TokenExpiredError' ?

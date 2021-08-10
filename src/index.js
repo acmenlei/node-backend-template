@@ -7,17 +7,18 @@ const tagRouter = require('./routes/tag');
 const categoryRouter = require('./routes/category');
 const aliossRouter = require('./routes/alioss');
 const visualRouter = require('./routes/visual');
+const permissionRouter = require('./routes/permission');
 
 const cookieConfig = require('./authentication/cookie-session');
 const cors = require('cors');
 const WHITE_LIST = require("./common/whiteList/list");
-const { TOKEN_VERIFY } = require("./common/token/token");
+const { tokenVerify } = require("./common/token/token");
 const Tip = require('./common/tip/tip');
 const { resolve } = require("path");
 
 /* 定时任务引入 */
 const { scheduleControl } = require('./common/schedule');
-const { increaseVisited } = require('./common/redis')
+const { increaseVisited } = require('./common/visual')
 
 app.use(cookieConfig); // 配置cookie
 app.use(express.urlencoded({ extended: false })); // 接收post请求数据
@@ -47,7 +48,7 @@ app.use("*", async(req, resp, next) => {
             return resp.json({ code: -999, msg: Tip.TOKEN_IS_UNDEFINED }); // 未携带token
         }
         try {
-            await TOKEN_VERIFY(token, username); // 验证通过
+            await tokenVerify(token, username); // 验证通过
             next(); // 没有出错就是验证成功的情况
         } catch (e) {
             return e.msg === 'TokenExpiredError' ?
@@ -62,6 +63,7 @@ app.use('/tag', tagRouter);
 app.use('/category', categoryRouter);
 app.use('/alioss', aliossRouter);
 app.use('/visual', visualRouter);
+app.use('/permission', permissionRouter);
 
 /* 定时任务执行 */
 scheduleControl()

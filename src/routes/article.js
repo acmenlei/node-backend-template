@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 const Article = require("../models/Article");
 const { Op } = require('../connect/mysql')
-const { increaseArticlePublish } = require('../common/redis')
+const { increaseArticlePublish } = require('../common/visual')
 
 /* 获取列表 */
 router.post("/list", async(request, response) => {

@@ -4,10 +4,10 @@ const RedisClient = require("../../connect/redis")
 const { VerifyToken } = require('../../authentication/token')
 
 // 验证token是否合格
-function TOKEN_VERIFY(token, username) {
+function tokenVerify(token, username) {
     return new Promise((resolve, reject) => {
         try {
-            RedisClient.get(`${username}:${TOKEN}`, async (err, reply) => {
+            RedisClient.get(`${username}:${TOKEN}`, async(err, reply) => {
                 if (reply == null) { // 当从redis查询的token为null
                     reject({ msg: err }) // 那么他就是非法操作
                 } else {
@@ -30,15 +30,19 @@ function TOKEN_VERIFY(token, username) {
 }
 
 /* token令牌设置操作并且允许前端获取自定义请求头 */
-function SET_TOKEN(resp, hash, username) {
+function setToken(resp, hash, username) {
     resp.setHeader(TOKEN, hash) // 设置token 
     resp.setHeader(USERNAME, username) // 设置username
     resp.setHeader("Access-Control-Expose-Headers", TOKEN + "," + USERNAME)
     RedisClient.SETEX(`${username}:${TOKEN}`, 60 * 60 * 24, hash) // 设置有效时间为24小时
 }
 
+function deleteToken(username) {
+    RedisClient.DEL(`${username}:${TOKEN}`); // 删除token, 客户端的token将失效
+}
+
 module.exports = {
-    TOKEN_VERIFY,
-    SET_TOKEN,
-    TOKEN
+    tokenVerify,
+    setToken,
+    deleteToken,
 }
