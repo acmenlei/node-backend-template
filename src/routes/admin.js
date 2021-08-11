@@ -10,7 +10,7 @@ const { queryPermission } = require('../permission')
 
 /* 注册操作 */
 router.post('/register', async(request, response) => {
-    const { ll_username, ll_password, ll_sex } = request.body;
+    const { ll_username, ll_password, ll_description, ll_email, ll_permission } = request.body;
     try {
         const dataValues = await User.findOne({ where: { ll_username } });
         if (dataValues != null) { // 账户已存在的情况
@@ -23,9 +23,7 @@ router.post('/register', async(request, response) => {
     const ll_id = new Date().getTime();
     // 不存在当前用户就创建
     try {
-        await User.create({ ll_id, ll_username, ll_password: HASH_STRING, ll_sex });
-        const TOEKN = await GenerateToken({ ll_username }, "24h"); // token有效期一天
-        setToken(response, TOEKN, ll_username) // 设置token操作
+        await User.create({ ll_id, ll_username, ll_password: HASH_STRING, ll_description, ll_email, ll_permission });
         increaseRegister(); // 今日注册人数增加
         return response.json({ code: 200, msg: Tip.REGISTER_OK });
     } catch (e) {

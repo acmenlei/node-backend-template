@@ -1,6 +1,5 @@
 const express = require('express');
 const Tip = require('../common/tip/tip');
-const Permission = require('../models/Permission');
 const User = require('../models/User');
 const router = express.Router();
 const {
@@ -20,9 +19,12 @@ router.post('/queryPermissions', async(request, response) => {
 })
 
 router.post('/queryUserPermissionList', async (request, response) => {
-    const { pageNum, pageSize } = request.body;
+    const { pageNum, pageSize, ll_username, ll_id } = request.body;
+    const filterCondition = { ll_username, ll_id };
+    !ll_username && delete filterCondition.ll_username;
+    !ll_id && delete filterCondition.ll_id;
     try {
-        const { rows, count } = await User.findAndCountAll({ limit: Number(pageSize), offset: (pageNum - 1) * pageSize });
+        const { rows, count } = await User.findAndCountAll({ limit: Number(pageSize), offset: (pageNum - 1) * pageSize, where: filterCondition });
         let len = rows.length;
         for (let i = 0; i < len; i++) { // 将每个成员的权限字段生成嵌套模型
             rows[i].ll_permission = await generatePermissions(rows[i].ll_permission);
