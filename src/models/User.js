@@ -23,6 +23,9 @@ User.init({
     ll_sex: {
         type: DataTypes.CHAR,
     },
+    ll_description: {
+        type: DataTypes.STRING,
+    },
     ll_permission: {
         type: DataTypes.TEXT,
     },
