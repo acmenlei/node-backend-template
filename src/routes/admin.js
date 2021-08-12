@@ -53,20 +53,60 @@ router.post('/login', async(request, response) => {
                         // 生成前端想要的权限格式
                         return response.json({ code: 200, permissions: dataValues.ll_permission.split(','), msg: Tip.LOGIN_OK });
                     } catch {
-                        return response.json({ code: -65, msg: Tip.NETWORK_ERROR });
+                        return response.json({ code: -999, msg: Tip.NETWORK_ERROR });
                     }
                 } else {
-                    return response.json({ code: -65, msg: Tip.LOGIN_FAILED });
+                    return response.json({ code: -999, msg: Tip.LOGIN_FAILED });
                 }
             } else {
-                return response.json({ code: -77, msg: Tip.USERNAME_IS_NULL });
+                return response.json({ code: -999, msg: Tip.USERNAME_IS_NULL });
             }
         } catch (e) {
             console.log(e);
-            return response.json({ code: -65, msg: Tip.LOGIN_FAILED });
+            return response.json({ code: -999, msg: Tip.LOGIN_FAILED });
         }
     })
-    /* 权限验证 */
+
+/* 更新用户信息 */
+router.post('/update', async (request, response) => {
+    const { ll_id, ll_username, ll_password, ll_description, ll_permission } = request.body;
+    const HASH = AES(ll_password); // 加密密码
+    try {
+        const record = await User.update({ll_username, ll_password: HASH, ll_description, ll_permission}, { where: { ll_id } });
+        return response.json({ code: 200, msg: Tip.OPERATOR_OK, data: record });
+    } catch {
+        return response.json({ code: -999, msg: Tip.OPERATOR_ERROR })
+    }
+})
+/* 根据id删除用户 */
+router.post('/delete', async (request, response) => {
+    const { ll_id } = request.body;
+    try {
+        const count = await User.destroy({ where: { ll_id } });
+        if(!count) {
+            return response.json({ code: -998, msg: Tip.SEARCHDATA_IS_NULL })   
+        }
+        return response.json({ code: 200, msg: Tip.OPERATOR_OK, count })   
+    } catch {
+        return response.json({ code: -999, msg: Tip.OPERATOR_ERROR })   
+    }
+})
+
+/* 根据id查用户 */
+router.post('/single', async (request, response) => {
+    const { ll_id } = request.body;
+    try {
+        const data = await User.findOne({ where: { ll_id } });
+        if(data != null) {
+            data.ll_password = AESparse(data.ll_password);
+            return response.json({ code: 200, msg: Tip.SEARCH_OK, data })
+        }
+        return response.json({ code: -999, msg: Tip.SEARCHDATA_IS_NULL })
+    } catch {
+        return response.json({ code: -999, msg: Tip.SEARCH_ERROR })
+    }
+})
+/* 权限验证 */
 router.post('/verify', async(request, response) => {
     const { token, username } = request.headers;
     const { routeCode } = request.body;

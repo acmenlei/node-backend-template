@@ -13,6 +13,7 @@ const SEARCH_OK = '查询成功';
 const SEARCH_ERROR = '查询失败';
 const OPERATOR_OK = '操作成功'
 const OPERATOR_ERROR = '操作失败 请检查网络'
+const SEARCHDATA_IS_NULL = '数据不存在'
 
 module.exports = {
     TOKEN_IS_UNDEFINED,
@@ -28,5 +29,6 @@ module.exports = {
     SEARCH_OK,
     SEARCH_ERROR,
     OPERATOR_OK,
-    OPERATOR_ERROR
+    OPERATOR_ERROR,
+    SEARCHDATA_IS_NULL
 }

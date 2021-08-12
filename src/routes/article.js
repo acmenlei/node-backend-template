@@ -34,6 +34,9 @@ router.post("/single", async(request, response) => {
         const { ll_id } = request.body;
         try {
             const data = await Article.findOne({ where: { ll_id } })
+            if(!data) {
+                return response.json({ code: -998, msg: Tip.SEARCHDATA_IS_NULL })   
+            }
             return response.json({ code: 200, data, msg: Tip.SEARCH_OK })
         } catch (e) {
             return response.json({ code: -999, msg: Tip.SEARCH_ERROR })
@@ -43,8 +46,11 @@ router.post("/single", async(request, response) => {
 router.post('/delete', async(request, response) => {
         const { ll_id } = request.body;
         try {
-            const flag = await Article.destroy({ where: { ll_id } });
-            return response.json({ code: 200, count: flag, msg: Tip.OPERATOR_OK })
+            const count = await Article.destroy({ where: { ll_id } });
+            if(!count) {
+                return response.json({ code: -998, msg: Tip.SEARCHDATA_IS_NULL })   
+            }
+            return response.json({ code: 200, count, msg: Tip.OPERATOR_OK })
         } catch (e) {
             return response.json({ code: -999, msg: Tip.OPERATOR_ERROR })
         }

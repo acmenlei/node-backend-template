@@ -31,7 +31,7 @@ router.post('/queryUserPermissionList', async (request, response) => {
         }
         return response.json({ data: rows, total: count, code: 200, msg: Tip.SEARCH_OK });
     } catch {
-        return response.json({ data, code: -999, msg: Tip.SEARCH_ERROR });
+        return response.json({ code: -999, msg: Tip.SEARCH_ERROR });
     }
 })
 
@@ -39,6 +39,9 @@ router.post('/queryUserById', async (request, response) => {
     const { ll_id } = request.body;
     try {
         const data = await User.findOne({ attributes: ['ll_id', 'll_permission'], where: { ll_id } })
+        if(!data) {
+            return response.json({ code: -998, msg: Tip.SEARCHDATA_IS_NULL })   
+        }
         data.ll_permission = data.ll_permission.split(',')
         return response.json({ data, msg: Tip.SEARCH_OK, code:  200 });
     } catch {
