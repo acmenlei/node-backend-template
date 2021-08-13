@@ -40,32 +40,32 @@ router.post("/loginout", async(request, response) => {
 
 /* 登陆操作 (登陆是不存在token的) */
 router.post('/login', async(request, response) => {
-        const { ll_username, ll_password } = request.body;
-        try {
-            const dataValues = await User.findOne({ where: { ll_username } });
-            if (dataValues != null) {
-                if (AESparse(dataValues.ll_password) === ll_password) {
-                    try {
-                        const TOKEN = await GenerateToken({ ll_username }, "24h");
-                        setToken(response, TOKEN, ll_username);
-                        // 今日登录人数增加
-                        increaseLogin();
-                        // 生成前端想要的权限格式
-                        return response.json({ code: 200, permissions: dataValues.ll_permission.split(','), msg: Tip.LOGIN_OK });
-                    } catch {
-                        return response.json({ code: -999, msg: Tip.NETWORK_ERROR });
-                    }
-                } else {
-                    return response.json({ code: -999, msg: Tip.LOGIN_FAILED });
+    const { ll_username, ll_password } = request.body;
+    try {
+        const dataValues = await User.findOne({ where: { ll_username } });
+        if (dataValues != null) {
+            if (AESparse(dataValues.ll_password) === ll_password) {
+                try {
+                    const TOKEN = await GenerateToken({ ll_username }, "24h");
+                    setToken(response, TOKEN, ll_username);
+                    // 今日登录人数增加
+                    increaseLogin();
+                    // 生成前端想要的权限格式
+                    return response.json({ code: 200, permissions: dataValues.ll_permission.split(','), msg: Tip.LOGIN_OK });
+                } catch {
+                    return response.json({ code: -999, msg: Tip.NETWORK_ERROR });
                 }
             } else {
-                return response.json({ code: -999, msg: Tip.USERNAME_IS_NULL });
+                return response.json({ code: -999, msg: Tip.LOGIN_FAILED });
             }
-        } catch (e) {
-            console.log(e);
-            return response.json({ code: -999, msg: Tip.LOGIN_FAILED });
+        } else {
+            return response.json({ code: -999, msg: Tip.USERNAME_IS_NULL });
         }
-    })
+    } catch (e) {
+        console.log(e);
+        return response.json({ code: -999, msg: Tip.LOGIN_FAILED });
+    }
+})
 
 /* 更新用户信息 */
 router.post('/update', async (request, response) => {
