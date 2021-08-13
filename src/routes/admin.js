@@ -50,8 +50,7 @@ router.post('/login', async(request, response) => {
                     setToken(response, TOKEN, ll_username);
                     // 今日登录人数增加
                     increaseLogin();
-                    // 生成前端想要的权限格式
-                    return response.json({ code: 200, permissions: dataValues.ll_permission.split(','), msg: Tip.LOGIN_OK });
+                    return response.json({ code: 200, msg: Tip.LOGIN_OK });
                 } catch {
                     return response.json({ code: -999, msg: Tip.NETWORK_ERROR });
                 }

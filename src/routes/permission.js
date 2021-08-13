@@ -1,9 +1,10 @@
 const express = require('express');
 const Tip = require('../common/tip/tip');
+const Permission = require('../models/Permission');
 const User = require('../models/User');
 const router = express.Router();
 const {
-    queryPermission, generatePermissions
+    queryPermission, generatePermissions, generatorAllPermissions
 } = require('../permission')
 
 router.post('/queryPermissions', async(request, response) => {
@@ -46,6 +47,16 @@ router.post('/queryUserById', async (request, response) => {
         return response.json({ data, msg: Tip.SEARCH_OK, code:  200 });
     } catch {
         return response.json({ msg: Tip.SEARCH_ERROR, code:  -999 });
+    }
+})
+
+router.get('/queryAllPermissions', async (request, response) => {
+    try {
+        const data = await Permission.findAll();
+        const permissions = await generatorAllPermissions(data); // 生成前端需要的目录结构
+        return response.json({ data: permissions, code: 200, msg: Tip.SEARCH_OK })
+    } catch {
+        return response.json({ code: -999, msg: Tip.SEARCH_ERROR })
     }
 })
 

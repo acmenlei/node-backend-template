@@ -57,7 +57,33 @@ async function queryPermission(ll_username) {
     }
 }
 
+function generatorAllPermissions(permissionList) {
+    let permissionConfigura = [], permissionLeveltwo = [];
+    /* 1. 处理一级路由先 */
+    for (let permission of permissionList) {
+        if(permission.ll_level == FIRST) {
+            // 一级菜单只需要这些属性
+            let { ll_id, ll_permission_name, ll_permission_val } = permission;
+            let levelOne = { ll_id, ll_permission_name, ll_permission_val, ll_children: [] }
+            permissionConfigura.push(levelOne);
+        } else {
+            permissionLeveltwo.push(permission);
+        }
+    }
+    /* 处理二级路由 */
+    for (let permission of permissionLeveltwo) {
+        for (let permissionOne of permissionConfigura ) {
+            if (permissionOne.ll_id == permission.ll_pid) {
+                permissionOne.ll_children.push(permission);
+                break;
+            }
+        }
+    }
+    return Promise.resolve(permissionConfigura)
+}
+
 module.exports = {
     generatePermissions,
     queryPermission,
+    generatorAllPermissions
 }
