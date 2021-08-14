@@ -57,6 +57,11 @@ async function queryPermission(ll_username) {
     }
 }
 
+/**
+ * 查询所有权限code码 生成前端需要的权限数据结构形式
+ * @param {Array<String>} permissionList 
+ * @returns 
+ */
 function generatorAllPermissions(permissionList) {
     let permissionConfigura = [], permissionLeveltwo = [];
     /* 1. 处理一级路由先 */
