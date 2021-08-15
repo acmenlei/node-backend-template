@@ -1,4 +1,5 @@
 const express = require('express');
+const { Op } = require('../connect/mysql');
 const Tip = require('../common/tip/tip');
 const Permission = require('../models/Permission');
 const User = require('../models/User');
@@ -21,7 +22,10 @@ router.post('/queryPermissions', async(request, response) => {
 
 router.post('/queryUserPermissionList', async (request, response) => {
     const { pageNum, pageSize, ll_username, ll_id } = request.body;
-    const filterCondition = { ll_username, ll_id };
+    const filterCondition = { 
+        ll_username: { [Op.like]: `%${ll_username}%` },
+        ll_id 
+    };
     !ll_username && delete filterCondition.ll_username;
     !ll_id && delete filterCondition.ll_id;
     try {
