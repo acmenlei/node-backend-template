@@ -1,5 +1,5 @@
 const schedule = require('node-schedule');
-const redis = require('../../connect/redis')
+const redis = require('../connect/redis')
 const VISUAL_LIST = 'VISUAL_LIST';
 const moment = require('moment');
 

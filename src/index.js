@@ -11,13 +11,13 @@ const permissionRouter = require('./routes/permission');
 
 const cookieConfig = require('./authentication/cookie-session');
 const cors = require('cors');
-const WHITE_LIST = require("./common/whiteList/list");
-const { tokenVerify } = require("./common/token/token");
+const WHITE_LIST = require("./whiteList/list");
+const { tokenVerify } = require("./intercepter/token");
 const Tip = require('./common/tip/tip');
 const { resolve } = require("path");
 
 /* 定时任务引入 */
-const { scheduleControl } = require('./common/schedule');
+const { scheduleControl } = require('./schedule');
 const { increaseVisited } = require('./common/visual')
 
 app.use(cookieConfig); // 配置cookie

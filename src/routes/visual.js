@@ -3,7 +3,7 @@ const router = express.Router();
 const Article = require("../models/article")
 const Tip = require('../common/tip/tip');
 const redis = require('../connect/redis')
-const { VISUAL_LIST } = require('../common/schedule')
+const { VISUAL_LIST } = require('../schedule')
 
 /* 获取文章分类 分组 */
 router.get('/queryCategoryGroup', async(request, response) => {

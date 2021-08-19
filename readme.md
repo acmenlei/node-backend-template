@@ -4,8 +4,11 @@
 
 #### 2. 模块介绍
 - 鉴权模块(jwt&crypto-js&cookie&session): `src/authentication`
-- 公共逻辑处理(定时任务schedule+tip+alioss+令牌校验): `src/common`
-- 数据库连接(MySQL&Redis): `src/connect`
+- 公共逻辑处理(tip/alioss/可视化数据处理): `src/common`
+- 拦截器逻辑处理: `src/intercepter`
+- 定时任务: `src/schedule`
+- 公共逻辑处理(tip/alioss/可视化数据处理): `src/common`
+- 过滤拦截器白名单: `src/whiteList`
 - 数据库模型: `src/models`
 - 路由接口: `src/routes`
 - 入口文件: `src/index`

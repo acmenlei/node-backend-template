@@ -1,7 +1,7 @@
 const TOKEN = 'token'
 const USERNAME = 'username'
-const RedisClient = require("../../connect/redis")
-const { VerifyToken } = require('../../authentication/token')
+const RedisClient = require("../connect/redis")
+const { VerifyToken } = require('../authentication/token')
 
 // 验证token是否合格
 function tokenVerify(token, username) {

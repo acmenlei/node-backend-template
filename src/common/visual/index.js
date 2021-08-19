@@ -1,5 +1,5 @@
 const redis = require('../../connect/redis');
-const { VISUAL_LIST } = require('../schedule')
+const { VISUAL_LIST } = require('../../schedule')
 const FRIST = 0;
 
 /* 公共处理函数 */
