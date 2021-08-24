@@ -25,9 +25,9 @@ app.use(express.urlencoded({ extended: false })); // 接收post请求数据
 app.use(express.json());
 app.use("/source", express.static(resolve(__dirname, "public")))
 
-// 跨域配置 （本地开发与内网穿透）
+// 跨域配置 （本地开发、内网穿透、码云pages服务）
 app.use(cors({
-    origin: ['http://localhost:8080','http://leilei.vicp.io'],
+    origin: ['http://localhost:8080','http://leilei.vicp.io','http://codeleilei.gitee.io'],
     credentials: true
 }));
 
