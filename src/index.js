@@ -25,9 +25,9 @@ app.use(express.urlencoded({ extended: false })); // 接收post请求数据
 app.use(express.json());
 app.use("/source", express.static(resolve(__dirname, "public")))
 
-// 跨域配置
+// 跨域配置 （本地开发与内网穿透）
 app.use(cors({
-    origin: ['http://localhost:8080'],
+    origin: ['http://localhost:8080','http://leilei.vicp.io'],
     credentials: true
 }));
 
@@ -35,8 +35,8 @@ app.use(cors({
 app.use("*", async(req, resp, next) => {
     increaseVisited(); // 访问量自增
     const { baseUrl } = req;
-    /* 白名单过滤,登陆注册等操作不需要传递token */
-    if (WHITE_LIST.includes(baseUrl)) {
+    /* 白名单过滤,登陆注册 访问静态资源等 操作不需要传递token */
+    if (WHITE_LIST.includes(baseUrl) || baseUrl.startsWith('/source')) {
         return next();
     }
     /**
