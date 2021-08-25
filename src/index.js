@@ -24,6 +24,7 @@ app.use(cookieConfig); // 配置cookie
 app.use(express.urlencoded({ extended: false })); // 接收post请求数据
 app.use(express.json());
 app.use("/source", express.static(resolve(__dirname, "public")))
+app.use("/apidoc", express.static(resolve(__dirname, "apidoc")))
 
 // 跨域配置 （本地开发、内网穿透、码云pages服务）
 app.use(cors({

@@ -8,6 +8,15 @@ const {
     queryPermission, generatePermissions, generatorAllPermissions
 } = require('../permission')
 
+/**
+ * @api {POST} /permission/queryPermissions 获得某个用户
+ * @apiDescription 通过用户名查询登录用户的所有权限
+ * @apiName queryPermissions
+ * @apiParam {String} ll_username 用户名
+ * @apiSampleRequest /permission/queryPermissions
+ * @apiGroup User
+ * @apiVersion 1.0.0
+ */
 router.post('/queryPermissions', async(request, response) => {
     const {
         ll_username
@@ -20,6 +29,18 @@ router.post('/queryPermissions', async(request, response) => {
     }
 })
 
+/**
+ * @api {POST} /permission/queryUserPermissionList 查询用户列表
+ * @apiDescription 查询用户列表 以及权限列表
+ * @apiName queryUserPermissionList
+ * @apiParam {String} ll_username 用户名
+ * @apiParam {Number} pageNum 第几页
+ * @apiParam {Number} pageSize 每页多少条数据
+ * @apiParam {Number} ll_id 用户ID
+ * @apiSampleRequest /permission/queryUserPermissionList
+ * @apiGroup User
+ * @apiVersion 1.0.0
+ */
 router.post('/queryUserPermissionList', async (request, response) => {
     const { pageNum, pageSize, ll_username, ll_id } = request.body;
     const filterCondition = { 
@@ -40,6 +61,15 @@ router.post('/queryUserPermissionList', async (request, response) => {
     }
 })
 
+/**
+ * @api {POST} /permission/queryUserById 查询用户权限
+ * @apiDescription 通过用户ID查询用户权限
+ * @apiName queryUserById
+ * @apiParam {Number} ll_id 用户ID
+ * @apiSampleRequest /permission/queryUserById
+ * @apiGroup User
+ * @apiVersion 1.0.0
+ */
 router.post('/queryUserById', async (request, response) => {
     const { ll_id } = request.body;
     try {
@@ -54,6 +84,14 @@ router.post('/queryUserById', async (request, response) => {
     }
 })
 
+/**
+ * @api {GET} /permission/queryAllPermissions 查询所有权限码
+ * @apiDescription 查询所有权限码
+ * @apiName queryAllPermissions
+ * @apiSampleRequest /permission/queryAllPermissions
+ * @apiGroup Permission
+ * @apiVersion 1.0.0
+ */
 router.get('/queryAllPermissions', async (request, response) => {
     try {
         const data = await Permission.findAll();
@@ -64,6 +102,16 @@ router.get('/queryAllPermissions', async (request, response) => {
     }
 })
 
+/**
+ * @api {POST} /permission/allocationPermissions 分配用户可用权限
+ * @apiDescription 分配用户可用权限
+ * @apiName allocationPermissions
+ * @apiParam {Number} ll_id 用户ID
+ * @apiParam {String} ll_permission 分配给用户的权限 以逗号分隔
+ * @apiSampleRequest /permission/allocationPermissions
+ * @apiGroup User
+ * @apiVersion 1.0.0
+ */
 router.post('/allocationPermissions', async (request, response) => {
     const { ll_id, ll_permission } = request.body;
     try {

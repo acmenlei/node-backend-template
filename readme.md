@@ -2,7 +2,10 @@
 `blog-admin-top`后台管理系统的服务端, `Node`编写, 需要配合`blog-admin-top`项目食用, 算是比较详细的模块拆分, 带权限处理+数据中台, 可以学习练手。
 `MySQL`+`Redis`做数据存储, `jwt`+`crypto-js`做用户登录校验
 
+> Api文档查看请在服务启动后访问apidoc地址
+
 #### 2. 模块介绍
+- Api文档: `src/apidoc`
 - 鉴权模块(jwt&crypto-js&cookie&session): `src/authentication`
 - 公共逻辑处理(tip/alioss/可视化数据处理): `src/common`
 - 拦截器逻辑处理: `src/intercepter`
@@ -18,7 +21,7 @@
 在入口文件(index.js)中,找到以下内容
 ```js
 app.use(cors({
-    origin: 'http://localhost:3001', // 此处为你的前端地址，值可以是string | Array<string>
+    origin: 'http://localhost:8080', // 此处为你的前端地址，值可以是string | Array<string>
     credentials: true // 允许跨域携带cookie
 })) // 跨域
 ```

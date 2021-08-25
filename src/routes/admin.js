@@ -8,7 +8,19 @@ const { AES, AESparse } = require("../authentication/hash");
 const { increaseRegister, increaseLogin } = require('../common/visual')
 const { queryPermission } = require('../permission')
 
-/* 注册操作 */
+/**
+ * @api {POST} /admin/register 注册角色
+ * @apiDescription 注册角色
+ * @apiName register
+ * @apiParam {String} ll_username 用户名
+ * @apiParam {String} ll_password 密码
+ * @apiParam {String} ll_description 描述信息
+ * @apiParam {String} ll_email 用户邮箱
+ * @apiParam {String} ll_permission 用户权限 以逗号分隔
+ * @apiSampleRequest /admin/register
+ * @apiGroup User
+ * @apiVersion 1.0.0
+ */
 router.post('/register', async(request, response) => {
     const { ll_username, ll_password, ll_description, ll_email, ll_permission } = request.body;
     try {
@@ -31,14 +43,31 @@ router.post('/register', async(request, response) => {
     }
 })
 
-/* 退出登陆操作 */
+/**
+ * @api {POST} /admin/loginout 退出登录/注销
+ * @apiDescription 退出登录/注销
+ * @apiName loginout
+ * @apiParam {String} ll_username 用户名
+ * @apiSampleRequest /admin/loginout
+ * @apiGroup User
+ * @apiVersion 1.0.0
+ */
 router.post("/loginout", async(request, response) => {
     const { ll_username } = request.body;
     deleteToken(ll_username);
     return response.json({ code: 200, msg: Tip.LOGIN_OUT });
 })
 
-/* 登陆操作 (登陆是不存在token的) */
+/**
+ * @api {POST} /admin/login 登陆后台
+ * @apiDescription 登陆后台
+ * @apiName login
+ * @apiParam {String} ll_username 用户名
+ * @apiParam {String} ll_password 密码
+ * @apiSampleRequest /admin/login
+ * @apiGroup User
+ * @apiVersion 1.0.0
+ */
 router.post('/login', async(request, response) => {
     const { ll_username, ll_password } = request.body;
     try {
@@ -66,7 +95,19 @@ router.post('/login', async(request, response) => {
     }
 })
 
-/* 更新用户信息 */
+/**
+ * @api {POST} /admin/update 更新用户信息
+ * @apiDescription 更新用户信息
+ * @apiName update
+ * @apiParam {Number} ll_id 用户ID
+ * @apiParam {String} ll_username 用户名
+ * @apiParam {String} ll_password 密码
+ * @apiParam {String} ll_description 用户描述信息
+ * @apiParam {String} ll_permission 用户权限 以逗号分隔
+ * @apiSampleRequest /admin/update
+ * @apiGroup User
+ * @apiVersion 1.0.0
+ */
 router.post('/update', async (request, response) => {
     const { ll_id, ll_username, ll_password, ll_description, ll_permission } = request.body;
     const HASH = AES(ll_password); // 加密密码
@@ -77,7 +118,16 @@ router.post('/update', async (request, response) => {
         return response.json({ code: -999, msg: Tip.OPERATOR_ERROR })
     }
 })
-/* 根据id删除用户 */
+
+/**
+ * @api {POST} /admin/delete 根据id删除用户
+ * @apiDescription 根据id删除用户
+ * @apiName delete
+ * @apiParam {Number} ll_id 用户ID
+ * @apiSampleRequest /admin/delete
+ * @apiGroup User
+ * @apiVersion 1.0.0
+ */
 router.post('/delete', async (request, response) => {
     const { ll_id } = request.body;
     try {
@@ -91,7 +141,15 @@ router.post('/delete', async (request, response) => {
     }
 })
 
-/* 根据id查用户 */
+/**
+ * @api {POST} /admin/single 根据id查用户
+ * @apiDescription 根据id查用户
+ * @apiName single
+ * @apiParam {Number} ll_id 用户ID
+ * @apiSampleRequest /admin/single
+ * @apiGroup User
+ * @apiVersion 1.0.0
+ */
 router.post('/single', async (request, response) => {
     const { ll_id } = request.body;
     try {
@@ -105,7 +163,16 @@ router.post('/single', async (request, response) => {
         return response.json({ code: -999, msg: Tip.SEARCH_ERROR })
     }
 })
-/* 权限验证 */
+
+/**
+ * @api {POST} /admin/verify 权限验证
+ * @apiDescription 权限验证(将token和username携带在请求头)
+ * @apiName verify
+ * @apiParam {String} routeCode 路由Code码 前端路由配置项中的Code
+ * @apiSampleRequest /admin/verify
+ * @apiGroup User
+ * @apiVersion 1.0.0
+ */
 router.post('/verify', async(request, response) => {
     const { token, username } = request.headers;
     const { routeCode } = request.body;

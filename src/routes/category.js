@@ -4,6 +4,14 @@ const router = express.Router();
 const Category = require("../models/Category")
 const { Op } = require('../connect/mysql')
 
+/**
+ * @api {GET} /category/getCategorys 获取所有分类
+ * @apiDescription 获取所有分类
+ * @apiName getCategorys
+ * @apiSampleRequest /category/getCategorys
+ * @apiGroup Category
+ * @apiVersion 1.0.0
+ */
 router.get('/getCategorys', async(request, response) => {
     try {
         const data = await Category.findAll();
@@ -13,6 +21,18 @@ router.get('/getCategorys', async(request, response) => {
     }
 })
 
+/**
+ * @api {POST} /category/list 获取所有分类列表
+ * @apiDescription 获取所有分类列表以及分类总条数
+ * @apiName list
+ * @apiParam {Number} pageNum 第几页
+ * @apiParam {Number} pageSize 每页多少条数据
+ * @apiParam (可选) {Number} ll_id 类别ID
+ * @apiParam (可选) {String} ll_category_name 类别名称
+ * @apiSampleRequest /category/list
+ * @apiGroup Category
+ * @apiVersion 1.0.0
+ */
 router.post('/list', async(request, response) => {
     const { pageNum, pageSize, ll_id, ll_category_name } = request.body;
     const filterCondition = { ll_id, ll_category_name: { [Op.like]: `%${ll_category_name}%` } }
@@ -30,6 +50,15 @@ router.post('/list', async(request, response) => {
     }
 })
 
+/**
+ * @api {POST} /category/delete 删除分类
+ * @apiDescription 根据ID删除分类
+ * @apiName delete
+ * @apiParam {Number} ll_id 类别ID
+ * @apiSampleRequest /category/delete
+ * @apiGroup Category
+ * @apiVersion 1.0.0
+ */
 router.post('/delete', async(request, response) => {
     const { ll_id } = request.body;
     try {
@@ -43,6 +72,15 @@ router.post('/delete', async(request, response) => {
     }
 })
 
+/**
+ * @api {POST} /category/single 获取分类
+ * @apiDescription 根据ID获取分类
+ * @apiName single
+ * @apiParam {Number} ll_id 类别ID
+ * @apiSampleRequest /category/single
+ * @apiGroup Category
+ * @apiVersion 1.0.0
+ */
 router.post('/single', async(request, response) => {
     const { ll_id } = request.body;
     try {
@@ -56,6 +94,16 @@ router.post('/single', async(request, response) => {
     }
 })
 
+/**
+ * @api {POST} /category/publish 新增分类
+ * @apiDescription 新增分类
+ * @apiName publish
+ * @apiParam {String} ll_category_val 类别Code值
+ * @apiParam {String} ll_category_name 类别名称
+ * @apiSampleRequest /category/publish
+ * @apiGroup Category
+ * @apiVersion 1.0.0
+ */
 router.post('/publish', async(request, response) => {
     const { ll_category_val, ll_category_name } = request.body;
     const ll_id = new Date().getTime();
@@ -67,6 +115,16 @@ router.post('/publish', async(request, response) => {
     }
 })
 
+/**
+ * @api {POST} /category/update 更新分类
+ * @apiDescription 更新分类
+ * @apiName update
+ * @apiParam {String} ll_category_val 类别Code值
+ * @apiParam {String} ll_category_name 类别名称
+ * @apiSampleRequest /category/update
+ * @apiGroup Category
+ * @apiVersion 1.0.0
+ */
 router.post('/update', async(request, response) => {
     const { ll_category_val, ll_category_name } = request.body;
     try {
