@@ -1,0 +1,26 @@
+{
+  "name": "node-server-redis",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "ali-oss": "^6.16.0",
+    "cookie-session": "^1.4.0",
+    "cors": "^2.8.5",
+    "crypto-js": "^4.0.0",
+    "dayjs": "^1.10.7",
+    "express": "^4.17.1",
+    "express-session": "^1.17.2",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.1",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.2.5",
+    "node-schedule": "^2.0.0",
+    "nodemon": "^2.0.7",
+    "redis": "^3.0.2",
+    "sequelize": "^6.6.5"
+  },
+  "scripts": {
+    "start": "nodemon ./src/index.js"
+  }
+}
