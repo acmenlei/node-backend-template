@@ -33,7 +33,8 @@ router.post("/list", async (request, response) => {
         const { rows, count } = await Article.findAndCountAll({
             limit: Number(pageSize),
             offset: (pageNum - 1) * pageSize,
-            where: filterCondition
+            where: filterCondition,
+            order: [['ll_id', 'DESC']],
         });
         return response.json({ data: rows, total: count, msg: Tip.SEARCH_OK, code: 200 })
     } catch (e) {

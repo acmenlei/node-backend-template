@@ -82,7 +82,8 @@ router.get("/getRecentArticle", async (request, response) => {
         const data = await Article.findAll({
             where: {
                 [Op.and]: [{ ll_updatedTime: { [Op.between]: [formatTime(startTime), formatTime(endTime)] } }]
-            }
+            },
+            order: [['ll_id', 'DESC']],
         })
         return response.json({ code: 200, data, msg: Tip.SEARCH_OK })
     } catch (error) {
