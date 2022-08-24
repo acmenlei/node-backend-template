@@ -1,5 +1,5 @@
 #### 1. 项目介绍
-`vue-admin-top`后台管理系统和`next-ts-blog-site`的服务端, `Node`编写, 需要配合那两个项目食用, 算是比较详细的模块拆分, 带权限处理+数据中台, 可以学习练手。
+`vue-admin-top`后台管理系统和`next--ssr-blog`的服务端, `Node`编写, 需要配合那两个项目食用, 算是比较详细的模块拆分, 带权限处理+数据中台, 可以学习练手。
 `MySQL`+`Redis`做数据存储, `jwt`+`crypto-js`做用户登录校验
 
 > Api文档查看请在服务启动后访问http://localhost:9001/docs
