@@ -17,6 +17,7 @@ const receptionCategoryRouter = require("./receptionRoutes/category")
 const receptionUserRouter = require("./receptionRoutes/user")
 const receptionCommentRouter = require("./receptionRoutes/comment")
 const receptionArticleCommentRouter = require("./receptionRoutes/articleComment")
+const receptionUploadRouter = require("./receptionRoutes/upload")
 
 const { instance } = require('./authentication/cookie-session');
 const cors = require('cors');
@@ -34,10 +35,11 @@ app.use(express.urlencoded({ extended: false })); // 接收post请求数据
 app.use(express.json());
 app.use("/source", express.static(resolve(__dirname, "public")))
 app.use("/docs", express.static(resolve(__dirname, "../", "docs")))
+app.use("/upload", express.static(resolve(__dirname, "upload")));
 
 // 跨域配置 （本地开发、内网穿透、码云pages服务）
 app.use(cors({
-    origin: ['http://localhost:3000','http://106.12.143.215:8080', 'http://106.12.143.215','http://localhost:8080', 'http://leilei.vicp.io', 'http://codeleilei.gitee.io'],
+    origin: ['http://localhost:3000', 'http://106.12.143.215:8080', 'http://106.12.143.215', 'http://localhost:8080', 'http://leilei.vicp.io', 'http://codeleilei.gitee.io'],
     credentials: true
 }));
 
@@ -87,6 +89,7 @@ app.use('/reception/tag', receptionTagRouter);
 app.use('/reception/user', receptionUserRouter);
 app.use('/reception/comment', receptionCommentRouter);
 app.use('/reception/articleComment', receptionArticleCommentRouter);
+app.use('/reception/fileUpload', receptionUploadRouter);
 /* 定时任务执行 */
 scheduleControl()
 

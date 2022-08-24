@@ -114,9 +114,9 @@ router.post("/logout", (request, response) => {
 
 // 更新用户昵称
 router.post('/update', async (req, res) => {
-  const { ll_id, ll_nick_name } = req.body
+  const { ll_id, ll_nick_name, ll_avatar } = req.body
   try {
-    const count = await ReceptionUser.update({ ll_nick_name }, { where: { ll_id } })
+    const count = await ReceptionUser.update({ ll_nick_name, ll_avatar }, { where: { ll_id } })
     if (!count) {
       return res.json({ code: -98, msg: Tip.SEARCHDATA_IS_NULL })
     }
